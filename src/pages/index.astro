@@ -5,14 +5,26 @@ import CommentForm from "../components/CommentForm.astro";
 import { db } from "../db/db";
 import { comments } from "../db/schema";
 
+let error = "";
+
 if (Astro.request.method === "POST") {
-  const data = await Astro.request.formData();
-  const author = data.get("author");
-  const content = data.get("content");
-  await db.insert(comments).values({
-    author: author as string,
-    content: content as string,
-  });
+  try {
+    const data = await Astro.request.formData();
+    const author = data.get("author");
+    const content = data.get("content");
+
+    if (!author || !content) {
+      error = "Please fill in all fields";
+    } else {
+      await db.insert(comments).values({
+        author: author as string,
+        content: content as string,
+      });
+      return Astro.redirect("/", 303);
+    }
+  } catch (e) {
+    error = "Failed to create comment";
+  }
 }
 
 const cms = await db.query.comments.findMany();
@@ -21,6 +33,7 @@ const cms = await db.query.comments.findMany();
 <Layout title="Comments">
   <main>
     <h1>Comments</h1>
+    {error && <p>{error}</p>}
     <ul>
       {cms.map((comment) => <Comment comment={comment} />)}
     </ul>
