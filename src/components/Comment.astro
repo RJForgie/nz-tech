@@ -1,12 +1,12 @@
 ---
-import { type Comment } from '../db/types';
+import { type Comment } from "../db/types";
 interface Props {
   comment: Comment;
 }
 const { comment } = Astro.props;
 ---
 
-<li >
-    <p>{comment.content}</p>
-      — <cite>{comment.author}</cite>
+<li>
+  <p>{comment.content}</p>
+  — <cite>{comment.author}</cite>
 </li>
