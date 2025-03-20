@@ -10,6 +10,13 @@ let error = "";
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
+
+    // Check honeypot field
+    if (data.get("notes")) {
+      // Bot detected - silently reject
+      return Astro.redirect("/", 303);
+    }
+
     const author = data.get("author");
     const content = data.get("content");
 

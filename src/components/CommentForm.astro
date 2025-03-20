@@ -7,5 +7,16 @@
     <label for="content">Comment</label>
     <textarea id="content" name="content" required rows="3"></textarea>
   </div>
-  <button type="submit"> Submit Comment </button>
+  {/* Honeypot field - hidden from real users */}
+  <div style="display: none;">
+    <label for="notes">Notes</label>
+    <input
+      type="text"
+      id="notes"
+      name="notes"
+      tabindex="-1"
+      autocomplete="off"
+    />
+  </div>
+  <button type="submit">Submit Comment</button>
 </form>
